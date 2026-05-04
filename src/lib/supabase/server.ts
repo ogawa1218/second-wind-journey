@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import type { Database } from "./database.types";
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -13,6 +14,6 @@ if (!url || !serviceRoleKey) {
  * Server-side Supabase client with service_role privileges.
  * Never expose this on the client. Use only in Route Handlers / Server Actions / Cron jobs.
  */
-export const supabaseAdmin = createClient(url, serviceRoleKey, {
+export const supabaseAdmin = createClient<Database>(url, serviceRoleKey, {
   auth: { persistSession: false, autoRefreshToken: false },
 });
