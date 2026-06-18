@@ -9,12 +9,16 @@
     "lint": "eslint",
     "test": "vitest run",
     "test:ui": "vitest --ui",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "workers:dev": "wrangler dev src/index.js",
+    "workers:deploy": "wrangler deploy",
+    "workers:tail": "wrangler tail"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.92.0",
     "@supabase/ssr": "^0.10.2",
     "@supabase/supabase-js": "^2.105.1",
+    "mathjs": "^13.0.0",
     "next": "16.2.4",
     "react": "19.2.4",
     "react-dom": "19.2.4",
@@ -30,6 +34,7 @@
     "eslint-config-next": "16.2.4",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "vitest": "^4.1.5"
+    "vitest": "^4.1.5",
+    "wrangler": "^3.95.0"
   }
 }

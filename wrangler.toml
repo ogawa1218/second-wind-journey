@@ -1,0 +1,36 @@
+name = "second-wind-journey"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+compatibility_flags = ["nodejs_compat"]
+
+[triggers]
+crons = [
+  "0 21 * * *",   # Daily action push: 06:00 JST
+  "0 15 * * 0",   # Weekly review:    Mon 00:00 JST (Sun 15:00 UTC)
+  "*/30 * * * *", # Wearable silent sync
+]
+
+[[kv_namespaces]]
+binding = "KV_SESSION"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
+preview_id = "REPLACE_WITH_KV_NAMESPACE_PREVIEW_ID"
+
+[vars]
+APP_ENV = "production"
+
+# Secrets — set via: wrangler secret put <NAME>
+# LINE_CHANNEL_SECRET
+# LINE_CHANNEL_ACCESS_TOKEN
+# SUPABASE_URL
+# SUPABASE_SERVICE_ROLE_KEY
+# ANTHROPIC_API_KEY
+# GEMINI_API_KEY
+# STRIPE_SECRET_KEY
+# STRIPE_WEBHOOK_SECRET
+# STRIPE_PUBLISHABLE_KEY
+# FITBIT_CLIENT_ID
+# FITBIT_CLIENT_SECRET
+# GARMIN_CONSUMER_KEY
+# GARMIN_CONSUMER_SECRET
+# LIFF_ID
+# CRON_SECRET
