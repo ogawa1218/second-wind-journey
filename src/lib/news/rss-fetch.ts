@@ -174,6 +174,15 @@ function cleanField(raw: string): string {
   return decodeEntities(stripTags(expandCdata(raw))).trim();
 }
 
+/** Remove frontmatter-style "key: value" lines that sometimes leak into RSS descriptions */
+function stripFrontmatter(text: string): string {
+  return text
+    .replace(/^(title|description|date|category|tags|author|slug|image|published|summary)[:\s][^\n]*/gim, "")
+    .replace(/^\[.*?\]$/gm, "")
+    .replace(/\n{2,}/g, "\n")
+    .trim();
+}
+
 /** Extract the text content of the first occurrence of a tag within a block */
 function extractTag(block: string, tag: string): string {
   // Match both <tag>...</tag> and self-closed, handling multiline content
@@ -248,7 +257,7 @@ export function parseRSS(xml: string, categorySlug: string): NewsItem[] {
 
       const rawDescription =
         extractTag(block, "summary") || extractTag(block, "content");
-      const description = cleanField(rawDescription).slice(0, 200);
+      const description = stripFrontmatter(cleanField(rawDescription)).slice(0, 200);
 
       const source = extractSource(block, title);
 
@@ -288,7 +297,7 @@ export function parseRSS(xml: string, categorySlug: string): NewsItem[] {
       const pubDate = cleanField(rawPubDate);
 
       const rawDescription = extractTag(block, "description");
-      const description = cleanField(rawDescription).slice(0, 200);
+      const description = stripFrontmatter(cleanField(rawDescription)).slice(0, 200);
 
       const source = extractSource(block, title);
 
