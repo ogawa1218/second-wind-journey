@@ -78,7 +78,7 @@ export default function OpengraphImage() {
           {[
             `元${START_WEIGHT}kg → 現在${CURRENT_WEIGHT}kg`,
             `レース目標 ${TARGET_WEIGHT}kg`,
-            "VO2max 58 必達",
+            "VO2max 59 → 65",
           ].map((label) => (
             <div
               key={label}

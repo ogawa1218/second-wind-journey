@@ -230,7 +230,7 @@ slides.append(frame(4,"Starting Line — 6月28日",
   f"""<div style="display:flex;gap:22px">
     {stat_card("CHALLENGE","17","/164","フィリピン出張から帰還",CYAN_BR)}
     {stat_card("BODY WEIGHT","68.2","kg","スタート100kg → −31.8kg","#fff")}
-    {stat_card("VO₂MAX","52","ml/kg","有酸素エンジンの現在値",CYAN_L)}
+    {stat_card("VO₂MAX","59","ml/kg","既にサブエガ射程の現在値",CYAN_L)}
     {stat_card("COUNTDOWN","147","days","21週間 / 4フェーズ",ORANGE_L,o=True)}
   </div>
   <div class="sub" style="margin-top:24px;max-width:none">出張明けのコンディションは良好。脚は軽い。ここから<b style="color:var(--cyanl)">基礎期</b>に入り、有酸素ベースを再構築する。</div>""",
@@ -238,7 +238,7 @@ slides.append(frame(4,"Starting Line — 6月28日",
 
 # 05 THE GAP -----------------------------------------------------
 rows=[("レース体重","68.2 kg","64.0 kg","−4.2 kg","21週で週−0.2kg"),
-      ("VO₂max","52","58 必達","+6","減量で分母も縮む"),
+      ("VO₂max","59","65 ゴール","+6","減量で分母も縮む"),
       ("設計ペース","5′30″/km(易)","4′00″/km","−90秒/km","閾値・MP走で接続"),
       ("月間走行距離","約 240 km","420–480 km","+1.8倍","段階的に積み上げ"),
       ("30kmの壁","未検証","完全攻略","—","特異期で予行")]
@@ -277,14 +277,14 @@ slides.append(frame(6,"Philosophy — 行動序列ドミノ",
 
 # 07 VO2MAX ROADMAP ---------------------------------------------
 slides.append(frame(7,"Roadmap ① — 有酸素エンジン",
-  'VO₂max を <span class="o">58</span> へ。',
-  f"""<div class="card">{chart([52,53.5,55,56.5,57.5,58.5],50,61,
-      ["6/28","7月","8月","9月","10月","11/22"],58,"58 必達","",)}</div>
+  '現在 <span class="c">59</span> を、<span class="o">65</span> へ。',
+  f"""<div class="card">{chart([59,60.5,62,63,64,65],57,67,
+      ["6/28","7月","8月","9月","10月","11/22"],65,"65 ゴール","",)}</div>
   <div style="display:flex;gap:18px;margin-top:18px">
     {''.join(f'<div class="card" style="flex:1"><div class="tag">{t}</div><div style="color:#dbe6f3;font-size:15px;margin-top:8px;line-height:1.6">{d}</div></div>'
-      for t,d in [("56 — 最低ライン","好条件前提でギリギリ2:52圏"),
-                  ("58 — 必達","2〜3分の貯金が作れる安全圏"),
-                  ("60 — 盤石","失速耐性込みで完全制圧")])}
+      for t,d in [("59 — 現在地","既にサブエガ射程内。土台は出来ている"),
+                  ("62 — 中間チェック","中盤の失速耐性と余裕が増す通過点"),
+                  ("65 — ゴール","サブエガを盤石に超える有酸素出力")])}
   </div>""",
   "体重が64kgに落ちれば分母が縮み、VO₂max/kgは自動的に上がる。<b>減量とエンジン強化は一つの戦略</b>。"));
 
@@ -356,7 +356,7 @@ slides.append(phase_detail(11,"Phase 2 — 養成期","2","養成期","8/1 – 9
    ("週1 VO₂maxインターバル","1km×5–6本 @3′50″ / つなぎ90秒"),
    ("週末ロング 130→150分","後半ペースアップで持久力に刺激"),
    ("月間距離 380→440km","強度と量を同時に引き上げる山場")],
-  "VO₂MAX","55","→ 上昇","ここでエンジンの最大出力を引き上げる。"));
+  "VO₂MAX","62","→ 65へ","ここでエンジンの最大出力を引き上げる。"));
 
 # 12 PHASE3
 slides.append(phase_detail(12,"Phase 3 — 特異期","3","特異期","9/16 – 11/1",ORANGE_L,"マラソン特異的・30kmの壁",
@@ -511,7 +511,7 @@ slides.append(f"""<!doctype html><html><head><meta charset="utf-8"><style>{CSS}
      睡眠を整え、食を設計し、走りを積む。ドミノは、もう倒れ始めている。</div>
    <div style="display:flex;gap:14px;margin-top:34px">
      {''.join(f'<div class="card" style="padding:14px 22px"><span class="mono" style="color:{c};font-size:13px;letter-spacing:2px">{t}</span> <b style="color:#fff;font-size:18px;margin-left:8px">{v}</b></div>'
-        for t,v,c in [("TIME","2:50:00",ORANGE_L),("PACE","4′00″/km",CYAN_BR),("WEIGHT","64kg",CYAN_L),("VO₂MAX","58",CYAN_L)])}
+        for t,v,c in [("TIME","2:50:00",ORANGE_L),("PACE","4′00″/km",CYAN_BR),("WEIGHT","64kg",CYAN_L),("VO₂MAX","65",CYAN_L)])}
    </div>
  </div>
  <div class="ftr"><div class="lab">DAY <b>{START_DAY}</b> / {TOTAL_DAYS}</div>
