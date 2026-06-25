@@ -174,6 +174,61 @@ def _parse_activity(act: dict) -> dict:
     }
 
 
+def fetch_daily_metrics(api, date_str: str) -> dict:
+    """
+    その日の体重・睡眠スコア・VO2max を取得する。
+    各指標は独立した API エンドポイントから取得し、失敗しても全体は止めない
+    （取得できなかった項目は None のまま返す）。
+    """
+    metrics = {
+        "weightKg":   None,
+        "sleepScore": None,
+        "sleepH":     None,
+        "vo2max":     None,
+    }
+
+    # ── 体重（体組成 API・グラム単位で返るため kg へ変換） ──
+    try:
+        body = api.get_body_composition(date_str) or {}
+        avg = (body.get("totalAverage") or {})
+        w_g = avg.get("weight")
+        if w_g:
+            metrics["weightKg"] = round(w_g / 1000, 1)
+    except Exception:
+        pass
+
+    # ── 睡眠スコア・睡眠時間 ──
+    try:
+        sleep = api.get_sleep_data(date_str) or {}
+        dto = (sleep.get("dailySleepDTO") or {})
+        scores = (dto.get("sleepScores") or {})
+        overall = (scores.get("overall") or {})
+        if overall.get("value") is not None:
+            metrics["sleepScore"] = int(overall["value"])
+        sleep_sec = dto.get("sleepTimeSeconds")
+        if sleep_sec:
+            metrics["sleepH"] = round(sleep_sec / 3600, 1)
+    except Exception:
+        pass
+
+    # ── VO2max（最大酸素摂取量・ランニング用 generic 値） ──
+    try:
+        maxm = api.get_max_metrics(date_str)
+        # リスト or dict のどちらでも返り得るので吸収する
+        entry = maxm[0] if isinstance(maxm, list) and maxm else maxm
+        generic = (entry or {}).get("generic") or {}
+        vo2 = (
+            generic.get("vo2MaxPreciseValue")
+            or generic.get("vo2MaxValue")
+        )
+        if vo2:
+            metrics["vo2max"] = round(float(vo2), 1)
+    except Exception:
+        pass
+
+    return metrics
+
+
 def _type_key_to_jp(key: str) -> str:
     mapping = {
         "running":          "ランニング",
@@ -212,6 +267,7 @@ def main():
     try:
         api  = get_api(email, password)
         runs = fetch_runs(api, date_str)
+        metrics = fetch_daily_metrics(api, date_str)
     except Exception as e:
         print(json.dumps({"error": str(e)}, ensure_ascii=False))
         sys.exit(1)
@@ -220,6 +276,7 @@ def main():
         "date": date_str,
         "count": len(runs),
         "runs": runs,
+        "metrics": metrics,
     }
     print(json.dumps(output, ensure_ascii=False, indent=2))
 
