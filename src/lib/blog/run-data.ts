@@ -35,7 +35,6 @@ export function getDaysToRace(date: Date = new Date()): number {
   return Math.ceil((RACE_DATE.getTime() - date.getTime()) / 86400000);
 }
 
-// Garmin連携で自動更新予定。現在はサンプルデータ。
 export const RUNS: RunEntry[] = [
   {
     date: "2026-06-19",

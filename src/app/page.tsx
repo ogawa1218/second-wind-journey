@@ -74,7 +74,6 @@ export default function BlogHomePage() {
             <div className="rounded-xl border border-[#1a1a1a] bg-[#111111] p-8 text-center text-[#525252]">
               <p className="text-2xl">🏃</p>
               <p className="mt-2 text-sm">まだランニング記録がありません</p>
-              <p className="mt-1 text-xs">Garmin連携で自動更新されます</p>
             </div>
           )}
         </section>
@@ -147,13 +146,6 @@ export default function BlogHomePage() {
         {/* Footer */}
         <footer className="mt-16 border-t border-[#1a1a1a] pt-8 text-center text-xs text-[#525252]">
           <p>MASH — サブエガ164日チャレンジ 2026</p>
-          <p className="mt-1">
-            Threads:{" "}
-            <span className="text-[#a3a3a3]">@masashi.run</span>
-            {" "}／{" "}
-            Substack:{" "}
-            <span className="text-[#a3a3a3]">Second Wind Journey</span>
-          </p>
         </footer>
       </main>
     </div>

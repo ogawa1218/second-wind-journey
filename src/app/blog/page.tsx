@@ -95,15 +95,6 @@ export default function BlogPage() {
           )}
         </section>
 
-        {/* Garmin連携予告 */}
-        <div className="mt-10 rounded-xl border border-[#1a1a1a] bg-[#111111] p-5 text-center text-sm text-[#525252]">
-          <p>
-            🔗 Garmin Connect と連携済み。毎朝ランニング後に自動更新。
-          </p>
-          <p className="mt-1 text-xs">
-            Threads / Substack にも同時投稿されます
-          </p>
-        </div>
       </main>
     </div>
   );
