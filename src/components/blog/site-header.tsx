@@ -27,6 +27,12 @@ export default function SiteHeader() {
             ランログ
           </Link>
           <Link
+            href="/news"
+            className="rounded-md px-3 py-1.5 text-[#a3a3a3] transition hover:bg-[#1a1a1a] hover:text-white"
+          >
+            ニュース
+          </Link>
+          <Link
             href="/#about"
             className="rounded-md px-3 py-1.5 text-[#a3a3a3] transition hover:bg-[#1a1a1a] hover:text-white"
           >
