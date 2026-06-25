@@ -1,27 +1,28 @@
 import SiteHeader from "@/components/blog/site-header";
 import RunLogCard from "@/components/blog/run-log-card";
-import { RUNS, getDayNumber, getDaysToRace } from "@/lib/blog/run-data";
+import { RUNS, getDayNumber, getDaysToRace, CURRENT_WEIGHT } from "@/lib/blog/run-data";
 
 export const metadata = {
   title: "ランログ | MASH サブエガ164日チャレンジ",
   description: "164日間のランニング記録。距離・ペース・心拍・体重・睡眠スコアを毎日記録。",
+  alternates: {
+    canonical: "/blog",
+  },
 };
-
-const CURRENT_WEIGHT = 72;
 
 export default function BlogPage() {
   const today = new Date();
   const dayNumber = getDayNumber(today);
   const daysToRace = getDaysToRace(today);
   const totalKm = RUNS.reduce((sum, r) => sum + r.distanceKm, 0);
+  // ペース文字列を厳密にパースし、不正な行は平均の母数から除外する
+  const paceSecs = RUNS.map((r) => {
+    const m = /^(\d+)'(\d{1,2})"?$/.exec(r.avgPaceStr);
+    return m ? Number(m[1]) * 60 + Number(m[2]) : null;
+  }).filter((v): v is number => v != null);
   const avgPaceSec =
-    RUNS.length > 0
-      ? Math.round(
-          RUNS.reduce((sum, r) => {
-            const [min, sec] = r.avgPaceStr.replace('"', "").split("'").map(Number);
-            return sum + min * 60 + sec;
-          }, 0) / RUNS.length
-        )
+    paceSecs.length > 0
+      ? Math.round(paceSecs.reduce((sum, s) => sum + s, 0) / paceSecs.length)
       : 0;
   const avgPaceStr =
     avgPaceSec > 0
@@ -69,7 +70,7 @@ export default function BlogPage() {
           if (gapDays >= 3) {
             return (
               <div className="mt-6 rounded-xl border border-[#f59e0b]/20 bg-[#f59e0b]/5 p-4 text-sm text-[#f59e0b]">
-                📍 {gapDays}日間のブランク（フィリピン出張）。{RUNS[0].day + gapDays > 0 ? `Day ${RUNS[0].day + gapDays}` : ""}から再開予定。
+                📍 {gapDays}日間のブランク（フィリピン出張）。Day {dayNumber}から再開予定。
               </div>
             );
           }

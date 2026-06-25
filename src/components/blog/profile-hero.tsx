@@ -1,3 +1,5 @@
+import { START_WEIGHT, CURRENT_WEIGHT } from "@/lib/blog/run-data";
+
 interface ProfileHeroProps {
   dayNumber: number;
 }
@@ -29,7 +31,7 @@ export default function ProfileHero({ dayNumber }: ProfileHeroProps) {
           </p>
           <div className="mt-3 flex flex-wrap gap-2 text-xs">
             <span className="rounded-full bg-[#1a1a1a] px-3 py-1 text-[#a3a3a3]">
-              元100kg → 現在72kg
+              元{START_WEIGHT}kg → 現在{CURRENT_WEIGHT}kg
             </span>
             <span className="rounded-full bg-[#1a1a1a] px-3 py-1 text-[#a3a3a3]">
               毎朝3:45-5:00起床

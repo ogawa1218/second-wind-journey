@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/blog/run-data";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,8 +14,25 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MASH | サブエガ164日チャレンジ",
-  description: "元100kg→現在72kg。2026年11月22日つくばマラソンでサブエガ（2時間50分切り）を目指す164日間の記録。",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "MASH | サブエガ164日チャレンジ",
+    template: "%s | MASH",
+  },
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    type: "website",
+    locale: "ja_JP",
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: "MASH | サブエガ164日チャレンジ",
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "MASH | サブエガ164日チャレンジ",
+    description: SITE_DESCRIPTION,
+  },
 };
 
 export default function RootLayout({

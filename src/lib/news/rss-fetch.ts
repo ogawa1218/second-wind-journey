@@ -174,10 +174,18 @@ function cleanField(raw: string): string {
   return decodeEntities(stripTags(expandCdata(raw))).trim();
 }
 
-/** Remove frontmatter-style "key: value" lines that sometimes leak into RSS descriptions */
+/**
+ * Remove frontmatter-style "key: value" lines that sometimes leak into RSS
+ * descriptions. A real colon is required after the key so that legitimate prose
+ * starting with these words ("Date with destiny…", "Summary of the race…",
+ * "Image recognition AI…") is preserved.
+ */
 function stripFrontmatter(text: string): string {
   return text
-    .replace(/^(title|description|date|category|tags|author|slug|image|published|summary)[:\s][^\n]*/gim, "")
+    .replace(
+      /^(title|description|date|category|tags|author|slug|image|published|summary)\s*:\s*[^\n]*/gim,
+      ""
+    )
     .replace(/^\[.*?\]$/gm, "")
     .replace(/\n{2,}/g, "\n")
     .trim();
@@ -215,6 +223,17 @@ function extractSource(itemBlock: string, title: string): string {
   const parts = title.split(" - ");
   if (parts.length > 1) return parts[parts.length - 1].trim();
   return "";
+}
+
+/**
+ * Google News titles end with " - 媒体名" which is also shown in the card
+ * footer. Strip the trailing source from the title to avoid the duplication.
+ */
+function dedupeSourceFromTitle(title: string, source: string): string {
+  if (source && title.endsWith(` - ${source}`)) {
+    return title.slice(0, title.length - source.length - 3).trim();
+  }
+  return title;
 }
 
 // ---------------------------------------------------------------------------
@@ -262,7 +281,7 @@ export function parseRSS(xml: string, categorySlug: string): NewsItem[] {
       const source = extractSource(block, title);
 
       items.push({
-        title,
+        title: dedupeSourceFromTitle(title, source),
         link,
         pubDate,
         pubDateFormatted: formatDate(pubDate),
@@ -302,7 +321,7 @@ export function parseRSS(xml: string, categorySlug: string): NewsItem[] {
       const source = extractSource(block, title);
 
       items.push({
-        title,
+        title: dedupeSourceFromTitle(title, source),
         link,
         pubDate,
         pubDateFormatted: formatDate(pubDate),

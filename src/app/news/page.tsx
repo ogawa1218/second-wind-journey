@@ -3,6 +3,7 @@ import Link from "next/link";
 import SiteHeader from "@/components/blog/site-header";
 import CategoryNav from "@/components/news/category-nav";
 import NewsCard from "@/components/news/news-card";
+import { ItemListJsonLd } from "@/components/seo/json-ld";
 import { CATEGORIES, fetchAllNews } from "@/lib/news/rss-fetch";
 
 export const revalidate = 3600;
@@ -10,7 +11,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "健康ニュース | MASH サブエガ164日チャレンジ",
   description:
-    "マラソントレーニング・睡眠・栄養・ウェアラブルテックなど、元100kg→現在72kgの市民ランナーMASHが実データで検証する健康ニュースまとめ。つくばマラソン2026サブエガ挑戦の全記録。",
+    "マラソントレーニング・睡眠・栄養・ウェアラブルテックなど、元100kgの市民ランナーMASHが実データで検証する健康ニュースまとめ。つくばマラソン2026サブエガ挑戦の全記録。",
   alternates: {
     canonical: "https://mash-health.vercel.app/news",
   },
@@ -21,19 +22,10 @@ const SITE_URL = "https://mash-health.vercel.app";
 export default async function NewsPage() {
   const newsMap = await fetchAllNews();
 
-  const websiteJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "MASH サブエガ164日チャレンジ",
-    url: SITE_URL,
-    description:
-      "元100kg→現在72kgの市民ランナーMASHがサブエガ達成を目指す164日間の挑戦記録",
-    publisher: {
-      "@type": "Person",
-      name: "MASH",
-      url: SITE_URL,
-    },
-  };
+  const listItems = Object.values(newsMap)
+    .flat()
+    .slice(0, 30)
+    .map((a) => ({ name: a.title, url: a.link }));
 
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
@@ -58,12 +50,9 @@ export default async function NewsPage() {
     <div className="min-h-screen">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
+      <ItemListJsonLd items={listItems} listName="健康ニュース" />
 
       <SiteHeader />
 

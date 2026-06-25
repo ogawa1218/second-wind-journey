@@ -10,9 +10,10 @@ export default function WeightProgress({
   targetWeight,
 }: WeightProgressProps) {
   const totalRange = startWeight - targetWeight;
-  const lostSoFar = startWeight - currentWeight;
+  const lostSoFar = Math.round((startWeight - currentWeight) * 10) / 10;
+  const toGo = Math.round((currentWeight - targetWeight) * 10) / 10;
   const progressPct = Math.min(100, Math.max(0, (lostSoFar / totalRange) * 100));
-  const currentPct = Math.min(100, Math.max(0, ((startWeight - currentWeight) / totalRange) * 100));
+  const currentPct = progressPct;
 
   return (
     <div className="mt-6 rounded-xl border border-[#1a1a1a] bg-[#111111] p-5">
@@ -20,7 +21,7 @@ export default function WeightProgress({
         <h3 className="text-sm font-semibold text-[#a3a3a3]">体重の旅路</h3>
         <span className="text-xs text-[#525252]">
           スタートから <span className="font-bold text-[#22c55e]">-{lostSoFar}kg</span> ／ あと{" "}
-          <span className="font-bold text-[#f97316]">{currentWeight - targetWeight}kg</span>
+          <span className="font-bold text-[#f97316]">{toGo}kg</span>
         </span>
       </div>
 

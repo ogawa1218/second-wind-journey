@@ -23,16 +23,28 @@ export const TOTAL_DAYS = 164;
 export const START_WEIGHT = 100;
 export const TARGET_WEIGHT = 64;
 
+// Absolute instants (epoch ms) for the fixed JST midnights of Day 1 and race day.
+const DAY1_MS = Date.parse("2026-06-12T00:00:00+09:00");
+const RACE_MS = Date.parse("2026-11-22T00:00:00+09:00");
+
+/**
+ * Epoch ms of JST midnight for the calendar date that `date` falls on *in JST*.
+ * Computing from an explicit +09:00 instant makes the result independent of the
+ * server's timezone (Vercel runs in UTC), eliminating the off-by-one in Day N.
+ */
+function jstMidnightMs(date: Date): number {
+  const ymd = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Tokyo",
+  }).format(date);
+  return Date.parse(`${ymd}T00:00:00+09:00`);
+}
+
 export function getDayNumber(date: Date = new Date()): number {
-  const jstDate = new Date(date.toLocaleString("en-US", { timeZone: "Asia/Tokyo" }));
-  jstDate.setHours(0, 0, 0, 0);
-  const day1 = new Date(DAY1);
-  day1.setHours(0, 0, 0, 0);
-  return Math.floor((jstDate.getTime() - day1.getTime()) / 86400000) + 1;
+  return Math.floor((jstMidnightMs(date) - DAY1_MS) / 86400000) + 1;
 }
 
 export function getDaysToRace(date: Date = new Date()): number {
-  return Math.ceil((RACE_DATE.getTime() - date.getTime()) / 86400000);
+  return Math.round((RACE_MS - jstMidnightMs(date)) / 86400000);
 }
 
 export const RUNS: RunEntry[] = [
@@ -149,3 +161,33 @@ export const RUNS: RunEntry[] = [
     sleepScore: 79,
   },
 ];
+
+// ---------------------------------------------------------------------------
+// Derived single-source-of-truth values (avoid hardcoding these elsewhere)
+// ---------------------------------------------------------------------------
+
+/** 最新の体重実測値（RUNS は新しい順。weight を持つ最初の記録から導出） */
+export const CURRENT_WEIGHT: number =
+  RUNS.find((r) => r.weight != null)?.weight ?? START_WEIGHT;
+
+/** スタートからの減量幅（小数1桁・浮動小数アーティファクト防止） */
+export const WEIGHT_LOST: number =
+  Math.round((START_WEIGHT - CURRENT_WEIGHT) * 10) / 10;
+
+/** レース目標までの残り体重（小数1桁） */
+export const WEIGHT_TO_GO: number =
+  Math.round((CURRENT_WEIGHT - TARGET_WEIGHT) * 10) / 10;
+
+// ---------------------------------------------------------------------------
+// Shared site metadata constants (single source for titles/descriptions)
+// ---------------------------------------------------------------------------
+
+export const SITE_URL = "https://mash-health.vercel.app";
+export const SITE_NAME = "MASH サブエガ164日チャレンジ";
+export const RACE_NAME = "つくばマラソン2026";
+export const GOAL_LABEL = "サブエガ（2時間50分切り）";
+
+/** トップ/レイアウト共通のサイト説明文（現在体重は実データ由来で自動更新） */
+export const SITE_DESCRIPTION =
+  `元${START_WEIGHT}kg→現在${CURRENT_WEIGHT}kg。2026年11月22日つくばマラソンで` +
+  `サブエガ（2時間50分切り）を目指す164日間の記録。`;

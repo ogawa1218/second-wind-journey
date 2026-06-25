@@ -17,16 +17,8 @@ export function WebSiteJsonLd() {
     name: SITE_NAME,
     url: SITE_URL,
     description:
-      '元100kg→現在72kgの市民ランナーMASHが実データで検証。つくばマラソン2026サブエガ挑戦の全記録。',
+      '元100kgの市民ランナーMASHが実データで検証。つくばマラソン2026サブエガ挑戦の全記録。',
     inLanguage: 'ja',
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: {
-        '@type': 'EntryPoint',
-        urlTemplate: `${SITE_URL}/search?q={search_term_string}`,
-      },
-      'query-input': 'required name=search_term_string',
-    },
   }
 
   return (
@@ -48,7 +40,6 @@ export function PersonJsonLd() {
     name: 'MASH（小川雅史）',
     description: '元100kgのマラソンランナー',
     url: SITE_URL,
-    sameAs: [SITE_URL],
     knowsAbout: [
       'マラソントレーニング',
       'サブエガ',
@@ -89,6 +80,39 @@ export function BreadcrumbJsonLd({ items }: BreadcrumbJsonLdProps) {
       position: index + 1,
       name: item.name,
       item: item.url,
+    })),
+  }
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+    />
+  )
+}
+
+// ---------------------------------------------------------------------------
+// ItemListJsonLd — ニュース一覧用（外部記事へのリンク集なので著者は主張しない）
+// ---------------------------------------------------------------------------
+
+interface ItemListJsonLdProps {
+  items: { name: string; url: string }[]
+  listName?: string
+}
+
+export function ItemListJsonLd({ items, listName }: ItemListJsonLdProps) {
+  if (items.length === 0) return null
+
+  const data = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    ...(listName ? { name: listName } : {}),
+    numberOfItems: items.length,
+    itemListElement: items.map((it, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: it.name,
+      url: it.url,
     })),
   }
 

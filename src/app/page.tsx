@@ -3,6 +3,7 @@ import ProfileHero from "@/components/blog/profile-hero";
 import ChallengeStats from "@/components/blog/challenge-stats";
 import WeightProgress from "@/components/blog/weight-progress";
 import RunLogCard from "@/components/blog/run-log-card";
+import { WebSiteJsonLd, PersonJsonLd } from "@/components/seo/json-ld";
 import Link from "next/link";
 import {
   RUNS,
@@ -10,14 +11,17 @@ import {
   getDaysToRace,
   START_WEIGHT,
   TARGET_WEIGHT,
+  CURRENT_WEIGHT,
+  WEIGHT_LOST,
+  SITE_DESCRIPTION,
 } from "@/lib/blog/run-data";
-
-const CURRENT_WEIGHT = 72;
 
 export const metadata = {
   title: "MASH | サブエガ164日チャレンジ",
-  description:
-    "元100kg→現在72kg。2026年11月22日つくばマラソンでサブエガ（2時間50分切り）を目指す164日間の記録。",
+  description: SITE_DESCRIPTION,
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default function BlogHomePage() {
@@ -29,6 +33,8 @@ export default function BlogHomePage() {
 
   return (
     <div className="min-h-screen">
+      <WebSiteJsonLd />
+      <PersonJsonLd />
       <SiteHeader />
 
       <main className="mx-auto max-w-3xl px-4 pb-24">
@@ -92,7 +98,7 @@ export default function BlogHomePage() {
               </p>
               <p className="mt-3 text-sm leading-relaxed text-[#a3a3a3]">
                 「行動序列ドミノ（睡眠→食事→運動）」を軸にライフスタイルを再設計し、
-                現在72kg（−28kg）まで絞ることができた。
+                現在{CURRENT_WEIGHT}kg（−{WEIGHT_LOST}kg）まで絞ることができた。
               </p>
               <p className="mt-3 text-sm font-semibold text-white">
                 次のステージは2時間50分切り。
@@ -105,9 +111,9 @@ export default function BlogHomePage() {
               <div className="mt-3 space-y-2 text-sm">
                 {[
                   ["身長", "181cm"],
-                  ["スタート体重", "100kg"],
-                  ["現在体重", "72kg"],
-                  ["レース目標体重", "64kg"],
+                  ["スタート体重", `${START_WEIGHT}kg`],
+                  ["現在体重", `${CURRENT_WEIGHT}kg`],
+                  ["レース目標体重", `${TARGET_WEIGHT}kg`],
                   ["目標タイム", "2:50:00（サブエガ）"],
                   ["レース", "2026-11-22 つくばマラソン"],
                   ["練習スタイル", "毎朝3:45〜5:00起床"],

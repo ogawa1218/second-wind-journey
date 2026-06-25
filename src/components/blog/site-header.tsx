@@ -38,9 +38,11 @@ export default function SiteHeader() {
           >
             プロフィール
           </Link>
+          {/* 管理導線は読者向けではないため控えめなテキストリンクに留める */}
           <Link
             href="/dashboard"
-            className="ml-2 rounded-md bg-[#f97316] px-3 py-1.5 text-sm font-semibold text-black transition hover:bg-[#ea6b00]"
+            className="ml-1 rounded-md px-2 py-1.5 text-xs text-[#525252] transition hover:bg-[#1a1a1a] hover:text-[#a3a3a3]"
+            aria-label="管理ダッシュボード"
           >
             管理
           </Link>

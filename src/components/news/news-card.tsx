@@ -8,16 +8,13 @@ interface NewsCardProps {
 export default function NewsCard({ item }: NewsCardProps) {
   const category = CATEGORIES.find((c) => c.slug === item.category);
   const accentColor = category?.accentColor ?? "text-[#a3a3a3]";
-  const truncatedDescription = item.description
-    ? item.description.slice(0, 100)
-    : "";
 
   return (
     <a
       href={item.link}
       target="_blank"
-      rel="noopener noreferrer"
-      className="group flex flex-col rounded-xl border border-[#1a1a1a] bg-[#111111] p-4 transition hover:border-[#2a2a2a] hover:bg-[#161616]"
+      rel="noopener noreferrer nofollow ugc"
+      className="group flex flex-col rounded-xl border border-[#1a1a1a] bg-[#111111] p-4 transition hover:border-[#2a2a2a] hover:bg-[#161616] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f97316] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
     >
       {/* Header: badge + date + external link icon */}
       <div className="flex items-start justify-between gap-2">
@@ -26,7 +23,7 @@ export default function NewsCard({ item }: NewsCardProps) {
         >
           {item.emoji} {category?.nameJp ?? item.category}
         </span>
-        <div className="flex flex-shrink-0 items-center gap-1.5 text-xs text-[#525252]">
+        <div className="flex flex-shrink-0 items-center gap-1.5 text-xs text-[#737373]">
           {item.pubDateFormatted && (
             <span>{item.pubDateFormatted}</span>
           )}
@@ -53,16 +50,16 @@ export default function NewsCard({ item }: NewsCardProps) {
       </p>
 
       {/* Description */}
-      {truncatedDescription && (
-        <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-[#737373]">
-          {truncatedDescription}
+      {item.description && (
+        <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-[#a3a3a3]">
+          {item.description}
         </p>
       )}
 
       {/* Footer: source */}
       {item.source && (
         <div className="mt-auto border-t border-[#1a1a1a] pt-3">
-          <p className="truncate text-xs text-[#525252]">{item.source}</p>
+          <p className="truncate text-xs text-[#737373]">{item.source}</p>
         </div>
       )}
     </a>

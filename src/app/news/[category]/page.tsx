@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import SiteHeader from "@/components/blog/site-header";
 import CategoryNav from "@/components/news/category-nav";
 import NewsCard from "@/components/news/news-card";
+import { ItemListJsonLd } from "@/components/seo/json-ld";
 import { CATEGORIES, fetchCategoryNews } from "@/lib/news/rss-fetch";
 
 export const revalidate = 3600;
@@ -23,7 +24,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!cat) return {};
 
   const title = `${cat.nameJp} ニュース | MASH サブエガ164日チャレンジ`;
-  const description = `${cat.description} — 元100kg→現在72kgの市民ランナーMASHが実データで検証。つくばマラソン2026サブエガ挑戦の全記録。`;
+  const description = `${cat.description} — 元100kgの市民ランナーMASHが実データで検証。つくばマラソン2026サブエガ挑戦の全記録。`;
 
   return {
     title,
@@ -74,6 +75,10 @@ export default async function CategoryPage({ params }: PageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <ItemListJsonLd
+        items={articles.map((a) => ({ name: a.title, url: a.link }))}
+        listName={`${cat.nameJp} ニュース`}
       />
 
       <SiteHeader />
